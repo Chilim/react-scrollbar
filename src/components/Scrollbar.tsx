@@ -11,14 +11,14 @@ interface IScrollbar {
 
 const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	const { viewWidth, viewHeight, children } = props;
-	// const outerRef = React.useRef<HTMLElement | null>(null);\
-	const innerRef = React.useRef<HTMLElement | null>(null);
+	// const outerRef = React.useRef<HTMLElement | null>(null);
+	const innerRef = React.useRef<HTMLDivElement | null>(null);
+	const trackRef = React.useRef<HTMLDivElement | null>(null);
 	const [config, setConfig] = React.useState({
 		viewSize: { w: 0, h: 0 },
 		containerSize: { w: 0, h: 0 },
 		scrollHeight: 0,
 	});
-	const [dragging, setDragging] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
 		if (innerRef) {
@@ -27,7 +27,7 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 				return {
 					...prevState,
 					viewSize: { w: viewWidth, h: viewHeight },
-					scrollHeight: innerContainer?.offsetHeight,
+					scrollHeight: innerContainer?.clientHeight,
 				};
 			});
 		}
@@ -43,10 +43,10 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 				width: config.viewSize.w,
 			}}
 		>
-			<ScrollTrack>
-				<Tick />
+			<ScrollTrack ref={trackRef}>
+				<Tick height={config.scrollHeight} />
 			</ScrollTrack>
-			<div className={'inner-container'} style={{ position: 'absolute', bottom: '50px' }}>
+			<div className={'inner-container'} style={{ position: 'absolute', top: 0 }} ref={innerRef}>
 				{children}
 			</div>
 		</div>
