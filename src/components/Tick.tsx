@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TickStyle = styled.div`
+type StyledPropsType = {
+	clientY: number;
+	trackHeight: number;
+};
+
+const TickStyle = styled.div.attrs<StyledPropsType>(({ clientY, trackHeight }) => ({
+	style: {
+		top: clientY < 0 ? 0 : clientY > trackHeight ? `${trackHeight - 50}px` : `${clientY}px`,
+	},
+}))<StyledPropsType>`
 	position: absolute;
-	top: ${({ clientY }: { clientY: number }) => {
-		const newClientY = clientY < 0 ? 0 : clientY;
-		return `${newClientY}px`;
-	}};
 	width: 100%;
 	height: 30px;
 	cursor: grab;
@@ -16,7 +21,12 @@ const TickStyle = styled.div`
 	}
 `;
 
-const Tick = () => {
+type PropsType = {
+	containerHeight: number;
+	trackHeight: number;
+};
+
+const Tick = ({ containerHeight, trackHeight }: PropsType) => {
 	const [dragging, setDragging] = React.useState(false);
 	const [clientY, setClinetY] = React.useState(0);
 	const tickRef = React.useRef<HTMLDivElement | null>(null);
@@ -65,7 +75,13 @@ const Tick = () => {
 	};
 
 	return (
-		<TickStyle clientY={clientY} onMouseDown={onMouseDown} onMouseUp={onMouseUp} ref={tickRef} />
+		<TickStyle
+			trackHeight={trackHeight}
+			clientY={clientY}
+			onMouseDown={onMouseDown}
+			onMouseUp={onMouseUp}
+			ref={tickRef}
+		/>
 	);
 };
 
