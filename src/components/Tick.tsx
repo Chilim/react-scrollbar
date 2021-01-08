@@ -22,14 +22,15 @@ const TickStyle = styled.div.attrs<StyledPropsType>(({ clientY, trackHeight }) =
 `;
 
 type PropsType = {
-	containerHeight: number;
 	trackHeight: number;
 };
 
-const Tick = ({ containerHeight, trackHeight }: PropsType) => {
+const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
+	{ trackHeight }: PropsType,
+	ref
+) => {
 	const [dragging, setDragging] = React.useState(false);
 	const [clientY, setClinetY] = React.useState(0);
-	const tickRef = React.useRef<HTMLDivElement | null>(null);
 
 	React.useEffect(() => {
 		const click = (event: MouseEvent) => {
@@ -37,11 +38,10 @@ const Tick = ({ containerHeight, trackHeight }: PropsType) => {
 				setDragging(true);
 			}
 		};
-
 		const cleanup = () => {
 			setDragging(false);
 		};
-		if (tickRef) {
+		if (ref) {
 			window.addEventListener('mousedown', click);
 			window.addEventListener('mouseup', cleanup);
 		}
@@ -49,7 +49,7 @@ const Tick = ({ containerHeight, trackHeight }: PropsType) => {
 			window.removeEventListener('mousedown', click);
 			window.removeEventListener('mouseup', cleanup);
 		};
-	}, [tickRef]);
+	}, [ref]);
 
 	React.useEffect(() => {
 		const scroll = (event: MouseEvent) => {
@@ -65,24 +65,22 @@ const Tick = ({ containerHeight, trackHeight }: PropsType) => {
 	}, [dragging]);
 
 	const onMouseDown = () => {
-		// console.log('onmousedown');
 		setDragging(true);
 	};
 
 	const onMouseUp = () => {
-		// console.log('onmouseup');
 		setDragging(false);
 	};
 
 	return (
 		<TickStyle
+			ref={ref}
 			trackHeight={trackHeight}
 			clientY={clientY}
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
-			ref={tickRef}
 		/>
 	);
 };
 
-export default Tick;
+export default React.forwardRef(Tick);
