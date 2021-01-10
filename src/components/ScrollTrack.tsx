@@ -14,7 +14,7 @@ type PropsType = {
 };
 
 export default React.forwardRef<HTMLDivElement, PropsType>(({ children, ...props }, ref) => (
-	<ScrollTrack {...props} className={'scroll-track'} ref={ref}>
+	<ScrollTrack {...props} ref={ref}>
 		{children}
 	</ScrollTrack>
 ));
