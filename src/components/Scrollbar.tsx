@@ -15,21 +15,13 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	const innerRef = React.useRef<HTMLDivElement | null>(null);
 	const trackRef = React.useRef<HTMLDivElement | null>(null);
 	const tickRef = React.useRef<HTMLDivElement | null>(null);
-	const [config, setConfig] = React.useState({
-		viewSize: { w: 0, h: 0 },
-		containerSize: { w: 0, h: 0 },
-		innerContainerHeight: 0,
-	});
+	const [scrollY, setScrollY] = React.useState(0);
 
 	React.useEffect(() => {
 		if (innerRef) {
 			setConfig(prevState => {
 				const innerContainer = innerRef.current as HTMLElement;
-				return {
-					...prevState,
-					viewSize: { w: viewWidth, h: viewHeight },
-					innerContainerHeight: innerContainer?.clientHeight,
-				};
+				return innerContainer?.clientHeight / viewHeight;
 			});
 		}
 	}, [innerRef, viewHeight, viewWidth]);
