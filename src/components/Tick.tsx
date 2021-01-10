@@ -23,10 +23,11 @@ const TickStyle = styled.div.attrs<StyledPropsType>(({ clientY, trackHeight }) =
 
 type PropsType = {
 	trackHeight: number;
+	onScroll: (y: number) => void;
 };
 
 const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
-	{ trackHeight }: PropsType,
+	{ trackHeight, onScroll }: PropsType,
 	ref
 ) => {
 	const [dragging, setDragging] = React.useState(false);
@@ -54,6 +55,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 	React.useEffect(() => {
 		const scroll = (event: MouseEvent) => {
 			event.preventDefault();
+			onScroll(event.pageY);
 			setClinetY(event.pageY);
 		};
 		if (dragging) {
@@ -62,7 +64,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 		return () => {
 			document.removeEventListener('mousemove', scroll);
 		};
-	}, [dragging]);
+	}, [dragging, onScroll]);
 
 	const onMouseDown = () => {
 		setDragging(true);
