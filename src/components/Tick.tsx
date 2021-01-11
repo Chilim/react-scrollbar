@@ -27,7 +27,7 @@ type PropsType = {
 };
 
 const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
-	{ trackHeight, onScroll }: PropsType,
+	{ trackHeight, onScroll, innerContainerHeight }: PropsType,
 	ref
 ) => {
 	const [dragging, setDragging] = React.useState(false);
