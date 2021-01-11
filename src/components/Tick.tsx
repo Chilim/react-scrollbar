@@ -56,8 +56,12 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 	React.useEffect(() => {
 		const scroll = (event: MouseEvent) => {
 			event.preventDefault();
-			onScroll(event.pageY);
-			setClinetY(event.pageY);
+			const y = event.pageY;
+			if (y < 0 || y > innerContainerHeight) {
+				return;
+			}
+			onScroll(y);
+			setClinetY(y);
 		};
 		if (dragging) {
 			document.addEventListener('mousemove', scroll);
