@@ -15,15 +15,15 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	const innerRef = React.useRef<HTMLDivElement | null>(null);
 	const trackRef = React.useRef<HTMLDivElement | null>(null);
 	const tickRef = React.useRef<HTMLDivElement | null>(null);
+	const [innerHeight, setInnerHeight] = React.useState(0);
 	const [ratio, setRation] = React.useState(1);
 	const [scrollY, setScrollY] = React.useState(0);
 
 	React.useEffect(() => {
 		if (innerRef) {
-			setRation(prev => {
-				const innerContainer = innerRef.current as HTMLElement;
-				return innerContainer?.clientHeight / viewHeight;
-			});
+			const innerHeight = innerRef.current?.clientHeight as number;
+			setRation(prev => innerHeight / viewHeight);
+			setInnerHeight(innerHeight);
 		}
 	}, [innerRef, viewHeight, viewWidth]);
 
@@ -46,7 +46,12 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 			}}
 		>
 			<ScrollTrack ref={trackRef}>
-				<Tick ref={tickRef} trackHeight={viewHeight} onScroll={onScroll} />
+				<Tick
+					ref={tickRef}
+					trackHeight={viewHeight}
+					onScroll={onScroll}
+					innerContainerHeight={innerHeight}
+				/>
 			</ScrollTrack>
 			<div
 				className={'inner-container'}
