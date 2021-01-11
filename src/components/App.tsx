@@ -7,7 +7,7 @@ const data = genData();
 
 function App() {
 	return (
-		<div className='App'>
+		<div>
 			<Scrollbar rowLength={30} viewHeight={500} viewWidth={700}>
 				{data.map((el, idx) => (
 					<div key={idx}>{el}</div>
