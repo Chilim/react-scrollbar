@@ -23,6 +23,7 @@ const TickStyle = styled.div.attrs<StyledPropsType>(({ clientY, trackHeight }) =
 
 type PropsType = {
 	trackHeight: number;
+	innerContainerHeight: number;
 	onScroll: (y: number) => void;
 };
 
