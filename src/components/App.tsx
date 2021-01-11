@@ -1,6 +1,5 @@
 import React from 'react';
 import Scrollbar from './Scrollbar';
-import './App.css';
 import { genData } from '../utils/data';
 
 const data = genData();
