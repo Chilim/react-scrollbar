@@ -36,7 +36,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 
 	React.useEffect(() => {
 		const click = (event: MouseEvent) => {
-			if (event.button === 0) {
+			if ((event.target as HTMLDivElement).id === 'tick' && event.button === 0) {
 				setDragging(true);
 			}
 		};
@@ -71,23 +71,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 		};
 	}, [dragging, onScroll]);
 
-	const onMouseDown = () => {
-		setDragging(true);
-	};
-
-	const onMouseUp = () => {
-		setDragging(false);
-	};
-
-	return (
-		<TickStyle
-			ref={ref}
-			trackHeight={trackHeight}
-			clientY={clientY}
-			onMouseDown={onMouseDown}
-			onMouseUp={onMouseUp}
-		/>
-	);
+	return <TickStyle ref={ref} trackHeight={trackHeight} clientY={clientY} id={'tick'} />;
 };
 
 export default React.forwardRef(Tick);
