@@ -69,7 +69,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 		return () => {
 			document.removeEventListener('mousemove', scroll);
 		};
-	}, [dragging, onScroll]);
+	}, [dragging, onScroll, innerContainerHeight]);
 
 	return <TickStyle ref={ref} trackHeight={trackHeight} clientY={clientY} id={'tick'} />;
 };
