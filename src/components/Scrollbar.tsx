@@ -36,6 +36,8 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	);
 
 	return (
+				<Tick ref={tickRef} trackHeight={viewHeight} onScroll={onScroll} scrollY={scrollY} />
+			</ScrollTrack>
 		<div
 			className={'container'}
 			style={{

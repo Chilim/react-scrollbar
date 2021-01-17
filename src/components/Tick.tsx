@@ -23,16 +23,15 @@ const TickStyle = styled.div.attrs<StyledPropsType>(({ clientY, trackHeight }) =
 
 type PropsType = {
 	trackHeight: number;
-	innerContainerHeight: number;
+	scrollY: number;
 	onScroll: (y: number) => void;
 };
 
 const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
-	{ trackHeight, onScroll, innerContainerHeight }: PropsType,
+	{ trackHeight, onScroll, scrollY }: PropsType,
 	ref
 ) => {
 	const [dragging, setDragging] = React.useState(false);
-	const [clientY, setClinetY] = React.useState(0);
 
 	React.useEffect(() => {
 		const click = (event: MouseEvent) => {
@@ -61,7 +60,6 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 				return;
 			}
 			onScroll(y);
-			setClinetY(y);
 		};
 		if (dragging) {
 			document.addEventListener('mousemove', scroll);
@@ -71,7 +69,7 @@ const Tick: React.ForwardRefRenderFunction<HTMLDivElement, PropsType> = (
 		};
 	}, [dragging, onScroll, trackHeight]);
 
-	return <TickStyle ref={ref} trackHeight={trackHeight} clientY={clientY} id={'tick'} />;
+	return <TickStyle ref={ref} trackHeight={trackHeight} clientY={scrollY} id={'tick'} />;
 };
 
 export default React.forwardRef(Tick);
