@@ -53,11 +53,7 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 					innerContainerHeight={innerHeight}
 				/>
 			</ScrollTrack>
-			<div
-				className={'inner-container'}
-				style={{ position: 'absolute', top: scrollY }}
-				ref={innerRef}
-			>
+			<div className={'inner-container'} style={{ position: 'absolute', top: 0 }} ref={innerRef}>
 				{children}
 			</div>
 		</div>
