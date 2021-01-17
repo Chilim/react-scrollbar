@@ -1,6 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import ScrollTrack from './ScrollTrack';
 import Tick from './Tick';
+
+const ContainerStyled = styled.div<{ height: number; width: number }>`
+	position: relative;
+	overflow: hidden;
+	height: ${({ height }: { height: number }) => `${height}px`};
+	width: ${({ width }: { width: number }) => `${width}px`};
+`;
 
 interface IScrollbar {
 	rowLength: number;
@@ -11,7 +19,6 @@ interface IScrollbar {
 
 const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	const { viewWidth, viewHeight, children } = props;
-	// const outerRef = React.useRef<HTMLElement | null>(null);
 	const innerRef = React.useRef<HTMLDivElement | null>(null);
 	const trackRef = React.useRef<HTMLDivElement | null>(null);
 	const tickRef = React.useRef<HTMLDivElement | null>(null);
@@ -22,43 +29,29 @@ const Scrollbar: React.FC<IScrollbar> = (props: IScrollbar) => {
 	React.useEffect(() => {
 		if (innerRef) {
 			const innerHeight = innerRef.current?.clientHeight as number;
-			setRation(prev => innerHeight / viewHeight);
+			const newRation = innerHeight / viewHeight;
+			setRation(newRation);
 			setInnerHeight(innerHeight);
 		}
 	}, [innerRef, viewHeight, viewWidth]);
 
-	const onScroll = React.useCallback(
-		y => {
-			const newScrollY = y * ratio;
-			setScrollY(-newScrollY);
-		},
-		[ratio]
-	);
+	const onScroll = React.useCallback(y => {
+		setScrollY(y);
+	}, []);
 
 	return (
+		<ContainerStyled height={viewHeight} width={viewWidth} id='container'>
+			<ScrollTrack ref={trackRef}>
 				<Tick ref={tickRef} trackHeight={viewHeight} onScroll={onScroll} scrollY={scrollY} />
 			</ScrollTrack>
 		<div
-			className={'container'}
-			style={{
-				position: 'relative',
-				overflow: 'hidden',
-				height: viewHeight,
-				width: viewWidth,
-			}}
+				className={'inner-container'}
+				style={{ position: 'absolute', top: -scrollY * ratio }}
+				ref={innerRef}
 		>
-			<ScrollTrack ref={trackRef}>
-				<Tick
-					ref={tickRef}
-					trackHeight={viewHeight}
-					onScroll={onScroll}
-					innerContainerHeight={innerHeight}
-				/>
-			</ScrollTrack>
-			<div className={'inner-container'} style={{ position: 'absolute', top: 0 }} ref={innerRef}>
 				{children}
 			</div>
-		</div>
+		</ContainerStyled>
 	);
 };
 
